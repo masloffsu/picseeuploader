@@ -65,6 +65,7 @@ public class MainUI extends JFrame {
         dialogUploadedURLTextField = new JTextField(15);
         dialogUploadedURLTextField.setEditable(false);
         dialogUploadedURLTextField.setText(uploadedFileURL);
+        dialogUploadedURLTextField.selectAll();
         panel.add(dialogUploadedURLTextField);
 
         dialogButton = new JButton("OK");
@@ -78,6 +79,14 @@ public class MainUI extends JFrame {
         dialogFrame.setVisible(true);
     }
 
+    private void showErrorMessage() {
+        JOptionPane.showMessageDialog(
+                this,
+                "Couldn't upload file",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
     private class ListenForButton implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -86,7 +95,11 @@ public class MainUI extends JFrame {
 
                 String uploadedFileURL = uploadFile(fileToUploadURL);
 
-                showUploadedFileURL(uploadedFileURL);
+                if (uploadedFileURL.isEmpty()) {
+                    showErrorMessage();
+                } else {
+                    showUploadedFileURL(uploadedFileURL);
+                }
             } else if (e.getSource() == dialogButton) {
                 dialogFrame.dispose();
             }
